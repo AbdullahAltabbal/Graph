@@ -14,6 +14,4 @@ namespace Graph
             Edges = new List<Edge>();
         }
     }
-
-
 }
