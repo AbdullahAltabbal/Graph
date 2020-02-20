@@ -59,7 +59,7 @@ namespace Graph
             foreach (var nod in Nodes)
             {
                 if (nod.Name != station)
-                 //   continue;
+                    continue;
 
                 if (nod.Edges.Count() != 0 && !removeEdges)
                    // continue;
