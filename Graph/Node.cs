@@ -7,7 +7,9 @@ namespace Graph
     public class Node
     {
         public string Name;
-        public List<Edge> Edges { get; set; } 
+        public List<Edge> Edges { get; set; }
+
+        public Node next;
 
         public Node()
         {

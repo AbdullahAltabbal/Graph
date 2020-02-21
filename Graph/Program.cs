@@ -20,6 +20,7 @@ namespace Graph
             graph.AddNode("Pankow");
             graph.AddNode("Tempelhpf");
             graph.AddNode("Vincent");
+            
 
 
             graph.AddEdge("Hermannplatz", "Zoo", 5);

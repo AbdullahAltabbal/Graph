@@ -56,7 +56,7 @@ namespace Graph
             {
                 Console.WriteLine("there is no station with this name!");
                 return false;
-            }
+            } 
 
             foreach (var nod in Nodes)
             {
@@ -94,7 +94,7 @@ namespace Graph
                     if (nod.Edges.Count() != 0)
                     {
                         var numOfEdges = nod.Edges.Count();
-                        List<int> edges = new List<int>(numOfEdges);
+                        List<Node> edges = new List<Node>(numOfEdges);
                         foreach (var edge in nod.Edges)
                         {
                             Console.WriteLine($"from {edge.Start.Name} to {edge.Dest.Name} there is a way and cost {edge.Costs}");
