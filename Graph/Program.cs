@@ -19,6 +19,7 @@ namespace Graph
             graph.AddNode("Steglitz");
             graph.AddNode("Pankow");
             graph.AddNode("Tempelhpf");
+            graph.AddNode("Vincent");
 
 
             graph.AddEdge("Hermannplatz", "Zoo", 5);
@@ -33,17 +34,20 @@ namespace Graph
             graph.AddEdge("Wittenau", "Kochstraße", 2);
             graph.AddEdge("Kochstraße", "Hauptbahnhof", 15);
 
-            graph.DisplayAllNodes();
 
-            if(!graph.RemoveNode("Zoo", removeEdges: true))
-            {
-                Console.WriteLine("Löschen ging nicht");
-            }
+            // graph.DisplayAllNodes();
+
+            graph.NodesNextTo("Tempelhpf");
+
+            //if(!graph.RemoveNode("Zoo" ))// removeEdges: true))
+            //{
+            //    Console.WriteLine("Löschen ging nicht");
+            //}
 
 
 
-            Console.WriteLine("--------------  NACH REMOVE ------------------");
-            graph.DisplayAllNodes();
+            //Console.WriteLine("--------------  NACH REMOVE ------------------");
+            //graph.DisplayAllNodes();
 
 
             //var hermann = graph.Nodes.Find(t => t.Name == "Wedding");
