@@ -145,44 +145,53 @@ namespace Graph
             return neighbourlist;
         }
 
-        // Johannas Code
-        //public List<List<Node>> DFS(Node start, Node Ziel, List<Node> history)
-        //{
-        //    //Console.WriteLine(start.value + " " + history.Count());
-        //    var newHistory = new List<Node>(history);
-        //    HashSet<Node> visited = new HashSet<Node>();
 
-        //    visited.Add(start);
+        public List<List<Node>> SearchWaysRecursive(Node start, Node ziel, List<Node> history)
+        {
+          //  Console.WriteLine(new string('-', history.Count) + "Starte " + start.value);
+            var solutions = new List<List<Node>>();
+            //Alle Nachbarn holen, die noch nicht in der History sind
+            var neighborNodes =
+                start.Edges.Select(e => e.FirstPosition)
+                .Union(start.Edges.Select(e => e.SecondPosition))
+                .Where(e => !history.Contains(e))
+                .ToArray();
+            foreach (var neighbor in neighborNodes)
+            {
+                if (neighbor == ziel)
+                {
+                    //ist der Nachbar das Ziel, speichern wir das
+                    var solution = new List<Node>(history) { neighbor };
+                    solutions.Add(solution);
+                }
+                else
+                {
+                    //ist es nicht das Ziel, dann erweitern wir die History und gehen ein Level tiefer
+                    //die Lösungen aus dieser Ebene adden wir zu den solutions
+                    var nextHistory = new List<Node>(history) { neighbor };
+                    solutions.AddRange(SearchWaysRecursive(neighbor, ziel, nextHistory));
+                }
+            }
+         //   Console.WriteLine(new string('-', history.Count) + "Beende " + start.value);
+            return solutions;
+        }
+        public int WaysCosts(List<Node> way)
+        {
+            var sum = 0;
+            foreach (var node in way)
+            {
+                var EdgesFromNode = new List<Edge>(node.Edges);
 
-        //    var neighborNodes = start.Edges
-        //        .Select(e => e.SecondPosition)
-        //        .Where(e=> !history.Contains(e))
-        //        .Where(e => !visited.Contains(e))
-        //        .ToList();
-
-        //    neighborNodes.AddRange(start.Edges
-        //        .Select(e => e.FirstPosition)
-        //        .Where(e => !history.Contains(e))
-        //        .Where(e => !visited.Contains(e))
-        //        .Where(e => !neighborNodes.Contains(e))
-        //        .ToArray());
-
-        //    foreach (var neighbor in neighborNodes)
-        //    {
-        //        newHistory.Add(neighbor);
-
-        //        if (neighbor == Ziel)
-        //        {
-        //            if (!solutions.Any(s => s.SequenceEqual(newHistory)))
-        //                solutions.Add(newHistory);
-        //            return solutions;
-        //        }                
-        //        solutions.AddRange(DFS(neighbor, Ziel, newHistory));
-        //    }
-        //    return solutions;
-        //}
-
-
+                for (int i = 0; i < EdgesFromNode.ToArray().Length+1; i++)
+                {
+                    if (EdgesFromNode[i].FirstPosition == EdgesFromNode[i+1].SecondPosition)
+                    {
+                        sum = sum + EdgesFromNode[i].Costs;
+                    }
+                }
+            }
+            return sum;
+        }
 
         // Jens & Vincent Code
         //public void DFSListWay(string startpoint, string target)
@@ -257,62 +266,78 @@ namespace Graph
         //                    visited.Add(neighbor);
 
         //                stack.Pop();
-        //            }               
+        //            }
         //        }
         //    }
         //    return solutions;
         //}
-        public List<List<Node>> GangAlgo(Node start, Node target)
-        {
-            List<Node> temp = new List<Node>();
-            stack.Push(start);
-            Node current = start;
-            while (stack.Count > 0)
-            {
-                var tempNachbar = nachBaren(current);
+        //public List<List<Node>> GangAlgo(Node start, Node target)
+        //{
+        //    List<Node> temp = new List<Node>();
+        //    stack.Push(start);
+        //    Node current = start;
+        //    while (stack.Count > 0)
+        //    {
+        //        var tempNachbar = nachBaren(current);
 
-                while (tempNachbar.Count != 0)
-                {
-                    current = tempNachbar.Where(n => !temp.Contains(n)).ToArray()[0];
-                    stack.Push(current);
-                    if (current == target)
-                    {
-                        if (!listExistiert(stack.ToList()))
-                            solutions.Add(stack.ToList());
-                        stack.Pop();
-                        current = stack.Peek();
-                        while (tempNachbar.Count == 1) // statt nur wenn ein nachfolgender nachbar besteht müssen wir den buchstaben so oft ins temp reinschreiben wie er nachbarn hat und darauf überprüfen 
-                        {
-                            if (tempNachbar.Count == 1)
-                            {
-                                temp.Add(current);
-                                stack.Pop();
-                                current = stack.Peek();
-                                tempNachbar = nachBaren(current);
-                            }                           
-                        }
-                        break;
-                    }                
-                   tempNachbar = nachBaren(current);
-                }
-                if (tempNachbar.Count == 0)
-                {
-                    stack.Pop();
-                    visited.Add(current);
-                    current = stack.Peek();
-                }
-            }
-            return solutions;
-        }
-        public List<Node> nachBaren(Node aktuell)
-        {
-            var tempnachbarn = FindNeighbour(aktuell.value)
-                              .Where(e => !stack.Contains(e))
-                              .Where(e => !visited.Contains(e))
-                              .ToList();
+        //        while (tempNachbar.Count != 0)
+        //        {
+        //            current = tempNachbar.Where(n => !temp.Contains(n)).ToArray()[0];
+        //            stack.Push(current);
+        //            if (current == target)
+        //            {
+        //                if (!listExistiert(stack.ToList()))
+        //                    solutions.Add(stack.ToList());
+        //                stack.Pop();
+        //                current = stack.Peek();
+        //                if (tempNachbar.Count != tempCount(temp, current)) // statt nur wenn ein nachfolgender nachbar besteht müssen wir den buchstaben so oft ins temp reinschreiben wie er nachbarn hat und darauf überprüfen 
+        //                {
+        //                        temp.Add(current);                            
+        //                }
+        //                else
+        //                {
+        //                    stack.Pop();
+        //                    current = stack.Peek();
+        //                    tempNachbar = nachBaren(current);
+        //                }
+        //                //while ()
+        //                //{
 
-            return tempnachbarn;
-        }
+        //                //}
+        //                break;
+        //            }                
+        //           tempNachbar = nachBaren(current);
+        //        }
+        //        if (tempNachbar.Count == 0)
+        //        {
+        //            stack.Pop();
+        //            visited.Add(current);
+        //            current = stack.Peek();
+        //        }
+        //    }
+        //    return solutions;
+        //}
+        //public List<Node> nachBaren(Node aktuell)
+        //{
+        //    var tempnachbarn = FindNeighbour(aktuell.value)
+        //                      .Where(e => !stack.Contains(e))
+        //                      .Where(e => !visited.Contains(e))
+        //                      .ToList();
+
+        //    return tempnachbarn;
+        //}
+
+        //public int tempCount (List<Node> gesamteListe, Node element)
+        //{
+        //    int Zähler = 0;
+
+        //    foreach (var item in gesamteListe)
+        //    {
+        //        if (item == element)
+        //            Zähler++;
+        //    }
+        //    return Zähler;
+        //}
         public bool listExistiert(List<Node> zuPrüfen)
         {
             var _zuPrüfen = zuPrüfen.ToArray();
