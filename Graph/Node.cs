@@ -6,11 +6,8 @@ namespace Graph
 {
     public class Node
     {
-        public string Name;
+        public string value;
         public List<Edge> Edges { get; set; }
-
-        public Node next;
-
         public Node()
         {
             Edges = new List<Edge>();

@@ -6,9 +6,9 @@ namespace Graph
 {
     public class Edge
     {
-        public Node Start { get; set; }
+        public Node FirstPosition { get; set; }
         public int Costs { get; set; }
-        public Node Dest { get; set; }
+        public Node SecondPosition { get; set; }
 
     }
 
