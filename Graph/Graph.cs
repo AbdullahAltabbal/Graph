@@ -148,7 +148,7 @@ namespace Graph
 
         public List<List<Node>> SearchWaysRecursive(Node start, Node ziel, List<Node> history)
         {
-          //  Console.WriteLine(new string('-', history.Count) + "Starte " + start.value);
+            //  Console.WriteLine(new string('-', history.Count) + "Starte " + start.value);
             var solutions = new List<List<Node>>();
             //Alle Nachbarn holen, die noch nicht in der History sind
             var neighborNodes =
@@ -172,25 +172,34 @@ namespace Graph
                     solutions.AddRange(SearchWaysRecursive(neighbor, ziel, nextHistory));
                 }
             }
-         //   Console.WriteLine(new string('-', history.Count) + "Beende " + start.value);
+            //   Console.WriteLine(new string('-', history.Count) + "Beende " + start.value);
             return solutions;
         }
         public int WaysCosts(List<Node> way)
         {
-            var sum = 0;
+            var AllEdgesFromWay = new List<Edge>();
+            var letzteEdges = new List<Edge>();
             foreach (var node in way)
             {
-                var EdgesFromNode = new List<Edge>(node.Edges);
+                AllEdgesFromWay.AddRange(node.Edges);
+            }
 
-                for (int i = 0; i < EdgesFromNode.ToArray().Length+1; i++)
+            List<Edge> distinctEdges = new List<Edge>();
+
+            foreach (var edge in AllEdgesFromWay)
+            {
+                if (!distinctEdges.Any(t => t.FirstPosition == edge.SecondPosition &&
+                    t.SecondPosition == edge.FirstPosition ||
+                    t.SecondPosition == edge.SecondPosition &&
+                    t.FirstPosition == edge.FirstPosition))
                 {
-                    if (EdgesFromNode[i].FirstPosition == EdgesFromNode[i+1].SecondPosition)
-                    {
-                        sum = sum + EdgesFromNode[i].Costs;
-                    }
+                    distinctEdges.Add(edge);
                 }
             }
-            return sum;
+            var edges2 = distinctEdges.Where(t => way.Contains(t.FirstPosition) && way.Contains(t.SecondPosition))
+                .ToList();
+           var summe = edges2.Sum(t => t.Costs);
+            return summe;
         }
 
         // Jens & Vincent Code
@@ -355,8 +364,8 @@ namespace Graph
                 {
                     if (_zuPrüfen[i] == _lösung[i])
                     {
-                        if (i == zuPrüfen.Count -1)
-                            return true;                        
+                        if (i == zuPrüfen.Count - 1)
+                            return true;
                     }
                     else
                         break;

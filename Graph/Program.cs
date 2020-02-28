@@ -53,9 +53,8 @@ namespace Graph
             graph.AddEdge("Steglitz", "Rudow", 4);
             graph.AddEdge("Tempelhpf", "Pankow", 8);
             graph.AddEdge("Wittenau", "Kochstraße", 2);
-          //  graph.AddEdge("Wittenau", "Tempelhpf", 4);
+            //graph.AddEdge("Wittenau", "Tempelhpf", 4);
             graph.AddEdge("Kochstraße", "Hauptbahnhof", 15);
-
 
 
             // graph.DisplayAllNodes();
@@ -69,10 +68,8 @@ namespace Graph
             var s = graph.SearchWaysRecursive(start, ziel, history);
 
             var count = 0;
-            var sum = 0;
             foreach (var solution in s)
-            {
-                
+            {              
                 var ar = solution.ToArray();
                 if (ar[0] == start)
                 {
@@ -85,26 +82,7 @@ namespace Graph
                     var cost = graph.WaysCosts(solution);
                     Console.WriteLine("Costs are :" + cost);
                 }
-
-                
-               
             }
-
-            
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
             //var history = new System.Collections.Generic.List<Node>
             //{
             //    start
